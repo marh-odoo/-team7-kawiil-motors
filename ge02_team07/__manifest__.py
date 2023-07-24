@@ -1,5 +1,5 @@
 {
-    "name": "Motorcycle Registry",
+    "name": "ge02_team07",
     
     "summary": "Manage Registration of Motorcycles",
     
@@ -18,18 +18,11 @@ This Module is used to keep track of the Motorcycle Reistration and Ownership of
     "depends": ["motorcycle_registry", "web_map"],
     
     "data": [
-        "security/motorcycle_registry_groups.xml",
-        "security/ir.model.access.csv",
-        'data/registry_data.xml',
-        "views/motorcycle_registry_menuitems.xml",
-        "views/motorcycle_registry_views.xml",
-        "views/product_template_inherit.xml",
-        "views/motorcycle_registry_templates.xml",
+        
     ],
     
     "demo": [
-        "demo/motorcycle_registry_demo.xml",
-        "demo/product_demo.xml",
+       
     ],
     
     "author": "kauil-motors",
