@@ -11,7 +11,7 @@ This Module is used to keep track of the Motorcycle Reistration and Ownership of
     
     "version": "0.1",
     
-    "category": "Kauil/Registry",
+    "category": "Kawiil/Registry",
     
     "license": "OPL-1",
     
