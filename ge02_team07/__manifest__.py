@@ -18,7 +18,7 @@ This Module is used to keep track of the Motorcycle Reistration and Ownership of
     "depends": ["motorcycle_registry", "web_map"],
     
     "data": [
-        
+        'views/motorcycle_registry_views.xml'
     ],
     
     "demo": [
