@@ -6,12 +6,12 @@
     "description": """
     Motorcycle Registry
 ====================
-This Module is used to keep track of the Motorcycle Reistration and Ownership of each motorcycled of the brand.
+This Module is used to check on new customers and give them a first time discount automatically.
     """,
     
     "version": "0.1",
     
-    "category": "Kauil/Registry",
+    "category": "Kawiil/Registry",
     
     "license": "OPL-1",
     
