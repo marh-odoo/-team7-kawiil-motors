@@ -18,6 +18,7 @@
     "depends": ["motorcycle_registry", "sale"],
     
     "data": [
+        'views/sale.view_order_form_inherit.xml'
     ],
     
     "demo": [
