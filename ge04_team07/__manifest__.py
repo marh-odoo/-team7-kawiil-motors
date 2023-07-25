@@ -15,10 +15,9 @@ This Module is used to keep track of the Motorcycle Reistration and Ownership of
     
     "license": "OPL-1",
     
-    "depends": ["motorcycle_registry", "sales"],
+    "depends": ["motorcycle_registry", "sale"],
     
     "data": [
-        
     ],
     
     "demo": [
