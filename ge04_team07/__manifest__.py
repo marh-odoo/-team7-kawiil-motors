@@ -1,12 +1,12 @@
 {
     "name": "ge04_team07",
     
-    "summary": "Manage Registration of Motorcycles",
+    "summary": "Add discount to new motorcycle clients",
     
     "description": """
-    Motorcycle Registry
+    ge04_team07
 ====================
-This Module is used to check on new customers and give them a first time discount automatically.
+    This Module is used to add a new field to indicate if some costumer has some motorcycle purchase to offer a discount in case they doesn't have.
     """,
     
     "version": "0.1",
@@ -24,7 +24,7 @@ This Module is used to check on new customers and give them a first time discoun
        
     ],
     
-    "author": "kauil-motors",
+    "author": "kawiil-motors",
     
     "website": "www.odoo.com",
     
