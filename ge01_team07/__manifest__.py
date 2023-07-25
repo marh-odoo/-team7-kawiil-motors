@@ -9,7 +9,7 @@
     'author':'team7',
     'website':'www.odoo.com',
     'category':'Kawiil/Admin',
-    'depends':['website','stock','sales'],
+    'depends':['website','stock','sale'],
     'data':[
         'views/ge01_team7_filter_view.xml',
     ],
