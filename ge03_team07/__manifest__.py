@@ -1,10 +1,10 @@
 {
     "name": "Motorcycle Name Generation",
-    "summary": "Name Generation for motorcycles",
+    "summary": "Auto name-generation for motorcycles in products tab",
     "description": """
     Motorcycle generation
     ====================
-    This Module is used to generate the name for motorcycles.
+        This Module is used to generate automatically the name for the "motorcycle" products based on the make, model and year.
     """,
     "version": "0.1",
     "category": "Kawiil/Admin",
@@ -14,5 +14,5 @@
     "demo": [],
     "author": "team7",
     "website": "www.odoo.com",
-    "application": True,
+    "application": False,
 }
