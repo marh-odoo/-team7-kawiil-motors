@@ -7,7 +7,7 @@ class ResPartner(models.Model):
 
     @api.depends('name')
     def _is_newcustomer(self):
-        #domain = env['sale.order.line'].search_read([('order_partner_id','ilike','hitachi'),('product_type','=','motorcycle')])
+        domain = self.env['sale.order.line'].search_read([('order_partner_id','ilike',self.name),('product_type','=','motorcycle')])
         for partner in self:
             if True:
                 partner.is_new_customer=True
