@@ -8,7 +8,7 @@
     'author':'team7',
     'website':'www.odoo.com',
     'category':'Kawiil/Admin',
-    'depends':['website','stock','sale'],
+    'depends':['sale','motorcycle_registry'],
     'data':[
         'views/ge01_team7_filter_view.xml',
     ],
