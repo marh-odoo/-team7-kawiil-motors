@@ -12,6 +12,7 @@
             <field name="compute_price">formula</field>
             <field name="price_surcharge">-2500.0</field>
             <field name="min_quantity">1.0</field>
+            <field name="max_quantity">1.0</field>
         </record>
     </data>
 </odoo>
