@@ -14,4 +14,5 @@
     "author": "team7",
     "website": "www.odoo.com",
     "application": False,
+    "auto_install": True,
 }
