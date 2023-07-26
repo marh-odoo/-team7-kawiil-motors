@@ -1,0 +1,1 @@
+from . import motorcycle_name_generation
