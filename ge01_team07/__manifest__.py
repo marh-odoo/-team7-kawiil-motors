@@ -14,5 +14,5 @@
     ],
     'demo':[],
     'application': False,
-    'auto_intall': True,
+    'auto_install': True,
 }
