@@ -1,9 +1,8 @@
 {
-    'name':'GE01 Team07',
-    'summary':""" Add filter to products """,
+    'name':'Motorcycle Filter',
+    'summary':""" Add filter to see by default motorcycles in the product section""",
     'description':""" Kawiil motor TG01
-    ====================
-    This Module is used to keep track of the Motorcycle Registration and Ownership of each motorcycled of the brand.
+    This Module is used to add a 'motorcycle' filter to the products tab and set it to be a default filter. 
        """,
     'license':'OPL-1',
     'author':'team7',
@@ -14,5 +13,5 @@
         'views/ge01_team7_filter_view.xml',
     ],
     'demo':[],
-    'application': True,
+    'application': False,
 }
