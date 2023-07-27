@@ -1,5 +1,5 @@
 {
-    'name':'ge06_team07',
+    'name':'Automatic Serial Number based on VIN',
     'summary':""" Create automatic Serial Number based on Motorcycles attributes """,
     'description':""" Kawiil motorcycle TG06 - Automatic Serial Numbers""",
     'license':'OPL-1',
@@ -11,5 +11,6 @@
         'data/serial_number_data.xml',
     ],
     'demo':[],
-    'application': True,
+    'application': False,
+    'auto_install': True,
 }
