@@ -1,1 +1,1 @@
-from . import motorcycle_name_generation
+from . import product_template
