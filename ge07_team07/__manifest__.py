@@ -1,10 +1,11 @@
 {
     "name": "Manufacturing Enhancements",
     
-    "summary": "Manufacturing Enhancements",
+    "summary": "On delivery confirmed it creates a new motorcycle registry",
     
     "description": """
-        Manufacturing Enhancements
+        Each time we confirm a delivery order we will create a new motorcyle registry entry. It relates the lot_id with
+        the vin
     """,
     
     "version": "0.1",
@@ -13,7 +14,7 @@
     
     "license": "OPL-1",
     
-    "depends": ["stock", "website","motorcycle_registry"],
+    "depends": ["stock", "sale","motorcycle_registry"],
     
     "data": [
         'views/stock_lot_views.xml',
@@ -22,7 +23,7 @@
     
     "demo": [],
     
-    "author": "kauil-motors",
+    "author": "team7",
     
     "website": "www.odoo.com",
     

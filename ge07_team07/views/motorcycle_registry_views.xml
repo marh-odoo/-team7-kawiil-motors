@@ -7,8 +7,9 @@
         <field name="inherit_id" ref="motorcycle_registry.motorcycle_registry_view_list"/>
         <field name="arch" type="xml">
             <field name="owner_id" position="after">
-                <field name="lot_ids"/>
+                <field name="lot_id"/>
             </field>
         </field>
     </record>
+
 </odoo>
