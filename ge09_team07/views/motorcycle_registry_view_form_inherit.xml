@@ -6,28 +6,15 @@
         <field name="inherit_id" ref="motorcycle_registry.motorcycle_registry_view_form" />
         <field name="arch" type="xml">
             <field name="picture" position="before">
-                <!-- <field name="vin" string="Delivery" /> -->
                 <div class="oe_button_box" name="button_box">
                     <button type="object"
-                        name="hello"
+                        name="get_action_view_repairs"
                         class="oe_stat_button"
-                        icon="fa-truck">
-                        <field name="vin" widget="statinfo" string="Delivery" />
+                        icon="fa-gears">
+                        <field name="repair_ids" widget="statinfo" string="Repairs" />
                     </button>
                 </div>
             </field>
-            <!-- <xpath expr="//sheet" position="inside">
-                <div class="oe_button_box" name="button_box">
-                    <button type="object"
-                    name = "hello"
-                    class="oe_stat_button"
-                    icon="fa-truck">
-                    <field name="vin" widget="statinfo" string="Delivery"/>
-                </button>
-                </div>
-                
-            </xpath> -->
-
         </field>
     </record>
 </odoo>

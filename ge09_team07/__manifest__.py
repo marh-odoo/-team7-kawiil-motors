@@ -16,8 +16,8 @@
     "depends": ["stock", "sale","motorcycle_registry", "repair"],
     
     "data": [
-        'views/repair.view_repair_order_tree_inherit.xml',
-        'views/smart.button.xml'
+        'views/repair_view_repair_order_tree_inherit.xml',
+        'views/motorcycle_registry_view_form_inherit.xml'
     ],
     
     "demo": [],
