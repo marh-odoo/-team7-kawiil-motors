@@ -1,12 +1,10 @@
 {
-    "name": "ge02_team07",
+    "name": "Motorcycle Registry Map View",
     
-    "summary": "Manage Registration of Motorcycles",
+    "summary": "Able to have map view in motorcycle registry view",
     
     "description": """
-    Motorcycle Registry
-====================
-This Module is used to keep track of the Motorcycle Reistration and Ownership of each motorcycled of the brand.
+        Display all motorcycle registry's since map view
     """,
     
     "version": "0.1",
@@ -21,14 +19,14 @@ This Module is used to keep track of the Motorcycle Reistration and Ownership of
         'views/motorcycle_registry_views.xml'
     ],
     
-    "demo": [
-       
-    ],
+    "demo": [],
     
-    "author": "kauil-motors",
+    "author": "team7",
     
     "website": "www.odoo.com",
     
-    "application": True,
+    "application": False,
+
+    "auto_install": True,
     
 }
