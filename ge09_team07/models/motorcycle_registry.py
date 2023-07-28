@@ -7,4 +7,5 @@ class MotorcycleRegistry(models.Model):
 
     def get_action_view_repairs(self):
         actions = self.env['ir.actions.actions']._for_xml_id('repair.action_repair_order_tree')
+        actions['domain'] = [('registry_id', '=', self.id)]
         return actions
