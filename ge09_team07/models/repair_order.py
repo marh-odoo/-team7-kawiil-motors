@@ -9,6 +9,8 @@ class Repair(models.Model):
     product_id = fields.Many2one('product.template',related="registry_id.lot_id.product_id.product_tmpl_id")
     partner_id = fields.Many2one(related='registry_id.owner_id')
     sale_order_id = fields.Many2one(related='registry_id.sale_order_id')
+    custom_lot_id = fields.Many2one(related="registry_id.lot_id", readonly=True, store=True)
+    
 
 
     @api.depends('vin')
@@ -18,5 +20,9 @@ class Repair(models.Model):
             if motorcycle:
                 order.registry_id = motorcycle
 
+    @api.depends('registry_id')
+    def _set_lot_id(self):
+        for lot in self:
+            lot.lot_id = self.registry_id.lot_id
 
 

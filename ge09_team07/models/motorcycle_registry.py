@@ -1,5 +1,4 @@
-from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo import fields, models
 
 class MotorcycleRegistry(models.Model):
     _inherit = 'motorcycle.registry'
