@@ -10,6 +10,7 @@ class Repair(models.Model):
     partner_id = fields.Many2one(related='registry_id.owner_id')
     sale_order_id = fields.Many2one(related='registry_id.sale_order_id')
     custom_lot_id = fields.Many2one(related="registry_id.lot_id", readonly=True, store=True)
+    lot_id = fields.Many2one(related="registry_id.lot_id")
     
 
 
