@@ -16,73 +16,108 @@ class CustomerPortal(portal.CustomerPortal):
         values = super()._prepare_home_portal_values(counters)
         partner = request.env.user.partner_id
 
-        MotorcycleRegistry = request.env['motocycle.registry']
-        if 'registry_count' in counters:
-            values['registry_count'] = MotorcycleRegistry.search_count(self._prepare_registry_domain(partner)) \
-                if MotorcycleRegistry.check_access_rights('read', raise_exception=False) else 0
+        MotorcycleRegistry = request.env['motorcycle.registry']
+        values['registry_count'] = MotorcycleRegistry.search_count(self._prepare_registry_domain(partner)) \
+            if MotorcycleRegistry.check_access_rights('read', raise_exception=False) else 0
         return values
 
     def _prepare_registry_domain(self, partner):
-        return [
-            #Think in domain
-        ]
+        return [('owner_id','=',[partner.id])]
     
-    def _get_sale_searchbar_sortings(self):
-        return {
-        #    'date': {'label': _('Order Date'), 'order': 'date_order desc'},
-            'name': {'label': _('Reference'), 'order': 'name'},
-        #    'stage': {'label': _('Stage'), 'order': 'state'},                  Think new searchbarsorting
-        }
+    #def _get_sale_searchbar_sortings(self):
+        #return {
+            #'date': {'label': _('Order Date'), 'order': 'registry_date desc'},
+            #'vin':  {'label': _('Reference'), 'order': 'vin'},
+        #}
 
 
     def _prepare_registry_portal_rendering_values(
-        self, page=1, date_begin=None, date_end=None, sortby=None, registry_page=False, **kwargs
+        self, page=1, registry_page=False, **kwargs
     ):
         MotorcycleRegistry = request.env['motorcycle.registry']
-
-        if not sortby:
-            sortby = 'date'
 
         partner = request.env.user.partner_id
         values = self._prepare_portal_layout_values()
 
-        if registry_page:
-            url = "/my/home"
-            domain = self._prepare_quotations_domain(partner)
-        #else:
-        #    url = "/my/orders"
-        #    domain = self._prepare_orders_domain(partner)
+        #searchbar_sortings = self._get_sale_searchbar_sortings()
+        #sort_order = searchbar_sortings['date']['order']
 
-        searchbar_sortings = self._get_sale_searchbar_sortings()
 
-        sort_order = searchbar_sortings[sortby]['order']   
-
-        #if date_begin and date_end:
-        #    domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
-
+        url = "/my/motorcycles"
+        domain = self._prepare_registry_domain(partner)
+            
         pager_values = portal_pager(
             url=url,
             total=MotorcycleRegistry.search_count(domain),
             page=page,
             step=self._items_per_page,
-            url_args={'date_begin': date_begin, 'date_end': date_end, 'sortby': sortby},
         )
-        orders = MotorcycleRegistry.search(domain, order=sort_order, limit=self._items_per_page, offset=pager_values['offset'])
+
+        motorcycles = MotorcycleRegistry.search(domain,limit=self._items_per_page, offset=pager_values['offset']) #<--- order=sort_order 
 
         values.update({
-            'date': date_begin,
-            'quotations': orders.sudo() if registry_page else MotorcycleRegistry,
-            'page_name': 'registry' if registry_page else 'order',
+            'registry': motorcycles.sudo(),
+            'page_name': 'registry',
             'pager': pager_values,
             'default_url': url,
-            'searchbar_sortings': registry_page,
-            'sortby': sortby,
+            #'searchbar_sortings': searchbar_sortings,
         })
 
         return values
     
-    @http.route(['/my/page'], type='http', auth="user", website=True)
-    def portal_my_quotes(self, **kwargs):
-        values = self._prepare_registry_portal_rendering_values(quotation_page=True, **kwargs)
-        request.session['my_quotations_history'] = values['quotations'].ids[:100]
-        return request.render("sale.portal_my_quotations", values)
+
+    @http.route(['/my/motorcycles', '/my/motorcycles/page/<int:page>'], type='http', auth="user", website=True)
+    def portal_my_registry(self, **kwargs):
+        values = self._prepare_registry_portal_rendering_values(registry_page=True, **kwargs)
+        request.session['my_registry_history'] = values['registry'].ids[:100]
+        return request.render("ge08_team07.portal_my_motorcycles", values)
+
+
+    @http.route(['/my/motorcycles/<int:registry_number>'], type='http', auth="public", website=True)
+    def portal_registry_page(self, registry_number, report_type=None, access_token=None, message=False, download=False, **kw):
+        try:
+            order_sudo = self._document_check_access('motorcycle.registry', registry_number, access_token=access_token)
+        except (AccessError, MissingError):
+            return request.redirect('/my')
+
+        if request.env.user.share and access_token:
+            # If a public/portal user accesses the order with the access token
+            # Log a note on the chatter.
+            today = fields.Date.today().isoformat()
+            session_obj_date = request.session.get('view_quote_%s' % order_sudo.id)
+            if session_obj_date != today:
+                # store the date as a string in the session to allow serialization
+                request.session['view_quote_%s' % order_sudo.id] = today
+                # The "Quotation viewed by customer" log note is an information
+                # dedicated to the salesman and shouldn't be translated in the customer/website lgg
+                context = {'lang': order_sudo.user_id.partner_id.lang or order_sudo.company_id.partner_id.lang}
+                msg = _('Quotation viewed by customer %s', order_sudo.partner_id.name if request.env.user._is_public() else request.env.user.partner_id.name)
+                del context
+                _message_post_helper(
+                    "motorcycle.registry",
+                    order_sudo.id,
+                    message=msg,
+                    token=order_sudo.access_token,
+                    message_type="notification",
+                    subtype_xmlid="mail.mt_note",
+                    partner_ids=order_sudo.user_id.sudo().partner_id.ids,
+                )
+
+        backend_url = f'/web#model={order_sudo._name}'\
+                    f'&id={order_sudo.id}'\
+                    f'&action={order_sudo._get_portal_return_action().id}'\
+                    f'&view_type=form'
+        
+        values = {
+            'motorcycle_registry': order_sudo,
+            'message': message,
+            'report_type': 'html',
+            'backend_url': backend_url,
+            'res_company': order_sudo.vin,  # Used to display correct company logo
+        }
+
+        history_session_key = 'my_registry_history'
+        values = self._get_page_view_values(order_sudo, access_token, values, history_session_key, False)
+
+
+        return request.render('ge08_team07.sale_order_portal_template', values)

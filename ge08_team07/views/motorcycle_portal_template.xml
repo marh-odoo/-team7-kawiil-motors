@@ -1,112 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+
     <template id="portal_my_home_menu_sale" name="Portal layout : sales menu entries" inherit_id="portal.portal_breadcrumbs" priority="20">
         <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
-            <li t-if="page_name == 'registry' or sale_order and sale_order.state in ('sent', 'cancel')" t-attf-class="breadcrumb-item #{'active ' if not sale_order else ''}">
-                <a t-if="sale_order" t-attf-href="/my/?{{ keep_query() }}">Quotations</a>
-                <t t-else="">Quotations</t>
+            <li t-if="page_name == 'registry' or motorcycle_registry" t-attf-class="breadcrumb-item #{'active ' if not motorcycle_registry else ''}">
+                <a t-if="motorcycle_registry" t-attf-href="/my/motorcycles?{{ keep_query() }}">Registries</a>
+                <t t-else="">Registries</t>
             </li>
-            <li t-if="page_name == 'order' or sale_order and sale_order.state not in ('sent', 'cancel')" t-attf-class="breadcrumb-item #{'active ' if not sale_order else ''}">
-                <a t-if="sale_order" t-attf-href="/my/orders?{{ keep_query() }}">Sales Orders</a>
-                <t t-else="">Sales Orders</t>
-            </li>
-            <li t-if="sale_order" class="breadcrumb-item active">
-                <span t-field="sale_order.type_name"/>
-                <t t-out="sale_order.name"/>
+            <li t-if="motorcycle_registry" class="breadcrumb-item active">
+                <span t-field="motorcycle_registry.registry_number"/>
             </li>
         </xpath>
     </template>
 
-    <template id="portal_my_home_sale" name="Show Quotations / Sales Orders" customize_show="True" inherit_id="portal.portal_my_home" priority="20">
+    <template id="portal_my_home_motorcycle" name="Show Motorcycles" customize_show="True" inherit_id="portal.portal_my_home" priority="20">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
             <t t-call="portal.portal_docs_entry">
-                <t t-set="title">Quotations</t>
-                <t t-set="url" t-value="'/my/quotes'"/>
-                <t t-set="placeholder_count" t-value="'quotation_count'"/>
-            </t>
-            <t t-call="portal.portal_docs_entry">
-                <t t-set="title">Sales Orders</t>
-                <t t-set="url" t-value="'/my/orders'"/>
-                <t t-set="placeholder_count" t-value="'order_count'"/>
+                <t t-set="title">Motorcycle Registries</t>
+                <t t-set="url" t-value="'/my/motorcycles'"/>
+                <t t-set="placeholder_count" t-value="'registry_count'"/>
             </t>
         </xpath>
     </template>
 
-    <template id="portal_my_quotations" name="My Quotations">
+    <template id="portal_my_motorcycles" name="My Motorcycles">
         <t t-call="portal.portal_layout">
             <t t-set="breadcrumbs_searchbar" t-value="True"/>
 
             <t t-call="portal.portal_searchbar">
-                <t t-set="title">Quotations</t>
+                <t t-set="title">Registries</t>
             </t>
-            <t t-if="quotations" t-call="portal.portal_table">
+
+            <t t-if="registry" t-call="portal.portal_table">
                 <thead>
                     <tr class="active">
-                        <th>Quotation #</th>
-                        <th class="text-end">Quotation Date</th>
-                        <th class="text-end">Valid Until</th>
+                        <th class="text-start">Registry</th>
+                        <th class="text-end">License Plate</th>
+                        <th class="text-end">VIN</th>
                         <th class="text-center"/>
-                        <th class="text-end">Total</th>
                     </tr>
                 </thead>
-                <t t-foreach="quotations" t-as="quotation">
+                <t t-foreach="registry" t-as="registry">
                     <tr>
-                        <td><a t-att-href="quotation.get_portal_url()"><t t-out="quotation.name"/></a></td>
-                        <td class="text-end"><span t-field="quotation.date_order"/></td>
-                        <td class="text-end"><span t-field="quotation.validity_date"/></td>
-                        <td class="text-center">
-                            <span t-if="quotation.state == 'cancel'" class="badge rounded-pill text-bg-secondary">
-                                <i class="fa fa-fw fa-remove"/> Cancelled</span>
-                            <span t-if="quotation.is_expired" class="badge rounded-pill text-bg-secondary">
-                                <i class="fa fa-fw fa-clock-o"/> Expired</span>
+                        <td>
+                            <a t-att-href="registry.get_portal_url()">
+                                <t t-out="registry.registry_number"/>
+                            </a>
                         </td>
-                        <td class="text-end">
-                            <span t-field="quotation.amount_total"/>
-                        </td>
+                        <td class="text-end"><span t-field="registry.license_plate"/></td>
+                        <td class="text-end"><span t-field="registry.vin"/></td>
+
                     </tr>
                 </t>
             </t>
-            <p t-else="">There are currently no quotations for your account.</p>
+            <p t-else="">There are currently no registry for your account.</p>
         </t>
     </template>
 
-    <template id="portal_my_orders" name="My Sales Orders">
-        <t t-call="portal.portal_layout">
-            <t t-set="breadcrumbs_searchbar" t-value="True"/>
 
-            <t t-call="portal.portal_searchbar">
-                <t t-set="title">Sales Orders</t>
+    <!-- Complete page of the sale_order -->
+    <template id="sale_order_portal_template" name="Sales Order Portal Template" inherit_id="portal.portal_sidebar" primary="True">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <t t-set="o_portal_fullwidth_alert">
+                <!-- Uses backend_url provided in rendering values -->
+                <t t-call="portal.portal_back_in_edit_mode"/>
             </t>
-            <t t-if="orders" t-call="portal.portal_table">
-                <thead>
-                    <tr class="active">
-                        <th>
-                            <span class='d-none d-md-inline'>Sales Order #</span>
-                            <span class='d-block d-md-none'>Ref.</span>
-                        </th>
-                        <th class="text-end">Order Date</th>
-                        <th class="text-center"/>
-                        <th class="text-end">Total</th>
-                    </tr>
-                </thead>
-                <t t-foreach="orders" t-as="order">
-                    <tr>
-                        <td><a t-att-href="order.get_portal_url()"><t t-out="order.name"/></a></td>
-                        <td class="text-end">
-                            <span t-field="order.date_order" t-options="{'widget': 'date'}"/>&amp;nbsp;
-                            <span class='d-none d-md-inline' t-field="order.date_order" t-options="{'time_only': True}"/>
-                        </td>
-                        <td class="text-center">
-                            <span t-if="order.state == 'done'"  class="badge rounded-pill text-bg-success">
-                                <i class="fa fa-fw fa-check" role="img" aria-label="Done" title="Done"/>Done
-                            </span>
-                        </td>
-                        <td class="text-end"><span t-field="order.amount_total"/></td>
-                    </tr>
+            
+            <!-- Sidebar -->
+            <div class="row mt16 o_portal_sale_sidebar">
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+
+                    <t t-set="title">
+                        <h2 class="mb-0">
+                            Owner's Information
+                        </h2>
+                    </t>
+                    <t t-set="entries">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                <th scope="row">Owner name:</th>
+                                <td>
+                                    <span t-field="motorcycle_registry.owner_id.name"/>   
+                                </td>
+
+                                </tr>
+                                <tr>
+                                <th scope="row">Phone:</th>
+                                <td>
+                                    <span t-field="motorcycle_registry.owner_id.phone"/>   
+                                </td>
+
+                                </tr>
+                                <tr>
+                                <th scope="row">Email:</th>
+                                <td colspan="2">
+                                    <span t-field="motorcycle_registry.owner_id.email"/>   
+                                </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
                 </t>
-            </t>
-            <p t-else="">There are currently no orders for your account.</p>
-        </t>
+
+                <!-- Page content -->
+                <div id="quote_content" class="col-12 col-lg justify-content-end">
+                    
+                    <!-- main content -->
+                    <div t-attf-class="card #{'pb-5' if report_type == 'html' else ''}" id="portal_sale_content">
+                        <div t-call="ge08_team07.sale_order_portal_content"/>
+                    </div>
+                </div><!-- // #quote_content -->
+            </div>
+        </xpath>
     </template>
+
+
+    <template id="sale_order_portal_content" name="Sales Order Portal Content">
+        <!-- Intro -->
+        <div id="introduction" t-attf-class="pb-2 pt-3 #{'card-header bg-white' if report_type == 'html' else ''}">
+            <h2 class="my-0">
+                Registry Information
+            </h2>
+        </div>
+
+        <section id="details" style="page-break-inside: auto;" class="mt32">
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <th scope="row"></th>
+                        <td>
+                            Registry Number
+                        </td>
+                        <td>
+                            <span t-field="motorcycle_registry.registry_number"/>  
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row"></th>
+                        <td>VIN</td>
+                        <td>
+                            <span t-field="motorcycle_registry.vin"/>  
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row"></th>
+                        <td>License plate</td>
+                        <td>
+                            <span t-field="motorcycle_registry.license_plate"/>  
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row"></th>
+                        <td>Make</td>
+                        <td>
+                            <span t-field="motorcycle_registry.make"/>  
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row"></th>
+                        <td>Model</td>
+                        <td>
+                            <span t-field="motorcycle_registry.model"/>  
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </section>
+
+    </template>
+
 </odoo>

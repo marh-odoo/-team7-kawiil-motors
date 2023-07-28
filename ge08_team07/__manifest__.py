@@ -11,9 +11,11 @@
     
     "license": "OPL-1",
     
-    "depends": ["stock", "website"],
+    "depends": ["stock", "website", "motorcycle_registry"],
     
-    "data": [],
+    "data": [
+        "views/motorcycle_portal_template.xml",
+    ],
     
     "demo": [],
     
