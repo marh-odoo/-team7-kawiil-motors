@@ -7,7 +7,6 @@
             <field name="view_mode">tree,form,map</field>
         </record>
     </data>
-
     <record id="motorcycle_registry_view_map" model="ir.ui.view">
         <field name="name">motorcycle.registry.view.map</field>
         <field name="model">motorcycle.registry</field>
