@@ -16,7 +16,8 @@
     "depends": ["motorcycle_registry", "web_map"],
     
     "data": [
-        'views/motorcycle_registry_views.xml'
+        'views/motorcycle_registry_menuitems_inherit.xml',
+        'views/motorcycle_registry_views_inherit.xml'
     ],
     
     "demo": [],
