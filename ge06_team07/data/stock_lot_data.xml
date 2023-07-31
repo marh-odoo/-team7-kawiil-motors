@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        <record id="sequence_serial_number" model="ir.sequence">
+        <record id="serial_number_sequence" model="ir.sequence">
             <field name="name">Serial Number</field>
             <field name="code">serial.number</field>
             <field name="prefix"></field>

@@ -1,12 +1,12 @@
 from odoo import api, fields, models
 
-class SerialNumber(models.Model):
+class StockLot(models.Model):
     _inherit = 'stock.lot'
 
-    name = fields.Char(compute="_serial_number", store=True)
+    name = fields.Char(compute="_compute_name", store=True)
 
     @api.depends('product_id')
-    def _serial_number(self):
+    def _compute_name(self):
         for serial in self:
             tmpl = serial.product_id.product_tmpl_id
             if tmpl.detailed_type == 'motorcycle' and serial.product_id.tracking != 'none':
