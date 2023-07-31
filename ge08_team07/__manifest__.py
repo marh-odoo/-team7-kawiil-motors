@@ -23,6 +23,6 @@
     
     "website": "www.odoo.com",
     
-    "application": True,
+    "application": False,
     
 }
