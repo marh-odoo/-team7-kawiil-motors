@@ -17,7 +17,7 @@ class CustomerPortal(portal.CustomerPortal):
         partner = request.env.user.partner_id
 
         MotorcycleRegistry = request.env['motorcycle.registry']
-        values['registry_count'] = MotorcycleRegistry.search_count(self._prepare_registry_domain(partner)) \
+        values['registry_count'] = MotorcycleRegistry.search_count([("owner_id", "=", partner.id)]) \
             if MotorcycleRegistry.check_access_rights('read', raise_exception=False) else 0
         return values
 
@@ -51,7 +51,7 @@ class CustomerPortal(portal.CustomerPortal):
             
         pager_values = portal_pager(
             url=url,
-            total=MotorcycleRegistry.search_count(domain),
+            total=MotorcycleRegistry.search_count([("owner_id", "=", partner.id)]),
             step=self._items_per_page,
         )
 
