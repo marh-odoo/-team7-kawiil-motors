@@ -5,6 +5,7 @@ class MotorcycleRegistry(models.Model):
     _inherit = ['portal.mixin', 'motorcycle.registry', 'utm.mixin']
     _description = "Override Mixin"
 
+    is_public = fields.Boolean(default=False)
 
     # portal.mixin override
     def _compute_access_url(self):

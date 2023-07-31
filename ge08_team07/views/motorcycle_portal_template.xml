@@ -97,7 +97,12 @@
                                 <tr>
                                 <th scope="row">Email:</th>
                                 <td colspan="2">
-                                    <span t-field="motorcycle_registry.owner_id.email"/>   
+                                    <div t-if="email_required" class="alert alert-danger alert-dismissable oe_email_required" role="alert">
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                        <p>Please enter a valid email address in order to receive notifications from answers or comments.</p>
+                                    </div>
+                                    <div>
+                                        <span t-field='motorcycle_registry.owner_id.email'/>                                    </div>
                                 </td>
                                 </tr>
                             </tbody>
@@ -127,54 +132,89 @@
         </div>
 
         <section id="details" style="page-break-inside: auto;" class="mt32">
-            <table class="table table-striped">
-                <tbody>
-                    <tr>
-                        <th scope="row"></th>
-                        <td>
-                            Registry Number
-                        </td>
-                        <td>
-                            <span t-field="motorcycle_registry.registry_number"/>  
-                        </td>
-                    </tr>
+            <form t-attf-action="/edit/registry" method="post" role="form" class="o_wprofile_editor_form js_website_submit_form row" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="id" id ="id" t-att-value="motorcycle_registry.id"/>
 
-                    <tr>
-                        <th scope="row"></th>
-                        <td>VIN</td>
-                        <td>
-                            <span t-field="motorcycle_registry.vin"/>  
-                        </td>
-                    </tr>
+                <table class="table table-striped">
 
-                    <tr>
-                        <th scope="row"></th>
-                        <td>License plate</td>
-                        <td>
-                            <span t-field="motorcycle_registry.license_plate"/>  
-                        </td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <th scope="row"></th>
+                            <td> VIN </td>
+                            <td>
+                                <span t-field="motorcycle_registry.vin"/>  
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <th scope="row"></th>
-                        <td>Make</td>
-                        <td>
-                            <span t-field="motorcycle_registry.make"/>  
-                        </td>
-                    </tr>
+                        <tr>
+                            <th scope="row"></th>
+                            <td>Registry Number</td>
+                            <td>
+                                <t  t-if= "motorcycle_registry.owner_id.id == user.id" >
+                                    <div class="col-xs-2">
+                                        <input type="text" class="form-control" name="rn" id="rn" required="True" t-attf-value="#{motorcycle_registry.registry_number}"/>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <span t-field="motorcycle_registry.registry_number"/>  
+                                </t>
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <th scope="row"></th>
-                        <td>Model</td>
-                        <td>
-                            <span t-field="motorcycle_registry.model"/>  
-                        </td>
-                    </tr>
+                        <tr>
+                            <th scope="row"></th>
+                            <td>License plate</td>
+                            <td>
+                                <t  t-if= "motorcycle_registry.owner_id.id == user.id" >
+                                    <input type="text" class="form-control" name="license" id="license"  t-attf-value="#{motorcycle_registry.license_plate}"/>
+                                </t>
+                                <t t-else="">
+                                    <span t-field="motorcycle_registry.license_plate"/>  
+                                </t>
+                            </td>
+                        </tr>
 
-                </tbody>
-            </table>
+                        <tr>
+                            <th scope="row"></th>
+                            <td>Make</td>
+                            <td>
+                                <span t-field="motorcycle_registry.make"/>  
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"></th>
+                            <td>Model</td>
+                            <td>                                
+                                <span t-field="motorcycle_registry.model"/>  
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                
+                <t  t-if= "motorcycle_registry.owner_id.id == user.id" >
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col">
+                                    <button type="submit" class="btn btn-primary o_wprofile_submit_btn">Update</button>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" name="public" type="checkbox" id="flexCheckDefault"/>
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        Public profile
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+                
+            </form>
         </section>
-
     </template>
 
 </odoo>
