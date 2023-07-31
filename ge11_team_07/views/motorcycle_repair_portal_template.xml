@@ -4,9 +4,40 @@
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
             <t t-call="portal.portal_docs_entry">
                 <t t-set="title">Repair orders</t>
-                <t t-set="url">/my/repairs</t>
-                <t t-set="placeholder_count" t-value="'repairs_count'"/>
+                <t t-set="url">/repairs/orders</t>
+                <t t-set="placeholder_count" t-value="'repairs_count'" />
             </t>
         </xpath>
-      </template>
+    </template>
+    <template id="portal_my_repair_orders" name="My Repair Orders">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True" />
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Hola</t>
+            </t>
+            <t t-if="registry" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th class="text-start">id</th>
+                        <th class="text-end">lot_id</th>
+                        <th class="text-end">product_id</th>
+                        <th class="text-center"/>
+                    </tr>
+                </thead>
+                <t t-foreach="registries" t-as="registry">
+                    <tr>
+                        <td>
+                            HOLA
+                        </td>
+                        <td class="text-end">
+                            <span t-field="registry.name"/> 
+                        </td>
+                        <td class="text-end"><span t-field="registry.partner_id"/></td>
+
+                    </tr>
+                </t>
+            </t>
+        </t>
+    </template>
 </odoo>

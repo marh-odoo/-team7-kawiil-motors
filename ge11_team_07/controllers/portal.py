@@ -14,8 +14,44 @@ class CustomerPortal(portal.CustomerPortal):
 
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
-        partner = request.env.user.partner_id
-
         RepairOrder = request.env['repair.order']
         values['repairs_count'] = RepairOrder.search_count([])
         return values
+    
+
+    def _prepare_repair_portal_rendering_values(
+        self, page=1, registry_page=False, **kwargs
+    ):
+        RepairsOrders = request.env['repair.order']
+
+        partner = request.env.user.partner_id
+        values = self._prepare_portal_layout_values()
+
+
+        url = "/repairs/orders"
+        domain = []
+            
+        pager_values = portal_pager(
+            url=url,
+            total=RepairsOrders.search_count(domain),
+            page=page,
+            step=self._items_per_page,
+        )
+
+        motorcycles = RepairsOrders.search(domain,limit=self._items_per_page, offset=pager_values['offset']) #<--- order=sort_order 
+
+        values.update({
+            'registry': motorcycles.sudo(),
+            'page_name': 'registry',
+            'pager': pager_values,
+            'default_url': url,
+        })
+
+        return values
+    
+    @http.route('/repairs/orders', type='http', website=True)
+    def handler(self, **kwargs):
+        values = self._prepare_registry_portal_rendering_values(registry_page=True, **kwargs)
+        request.session['my_registry_history'] = values['registry'].ids[:100]
+        return request.render("ge11_team_07.portal_my_repair_orders", values)
+        # return request.render("purchase.portal_my_purchase_order", values)

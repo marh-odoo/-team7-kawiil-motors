@@ -23,13 +23,6 @@ class CustomerPortal(portal.CustomerPortal):
 
     def _prepare_registry_domain(self, partner):
         return [('owner_id','=',[partner.id])]
-    
-    #def _get_sale_searchbar_sortings(self):
-        #return {
-            #'date': {'label': _('Order Date'), 'order': 'registry_date desc'},
-            #'vin':  {'label': _('Reference'), 'order': 'vin'},
-        #}
-
 
     def _prepare_registry_portal_rendering_values(
         self, page=1, registry_page=False, **kwargs
@@ -38,9 +31,6 @@ class CustomerPortal(portal.CustomerPortal):
 
         partner = request.env.user.partner_id
         values = self._prepare_portal_layout_values()
-
-        #searchbar_sortings = self._get_sale_searchbar_sortings()
-        #sort_order = searchbar_sortings['date']['order']
 
 
         url = "/my/motorcycles"
@@ -60,7 +50,6 @@ class CustomerPortal(portal.CustomerPortal):
             'page_name': 'registry',
             'pager': pager_values,
             'default_url': url,
-            #'searchbar_sortings': searchbar_sortings,
         })
 
         return values
@@ -81,15 +70,10 @@ class CustomerPortal(portal.CustomerPortal):
             return request.redirect('/my')
 
         if request.env.user.share and access_token:
-            # If a public/portal user accesses the order with the access token
-            # Log a note on the chatter.
             today = fields.Date.today().isoformat()
             session_obj_date = request.session.get('view_quote_%s' % order_sudo.id)
             if session_obj_date != today:
-                # store the date as a string in the session to allow serialization
                 request.session['view_quote_%s' % order_sudo.id] = today
-                # The "Quotation viewed by customer" log note is an information
-                # dedicated to the salesman and shouldn't be translated in the customer/website lgg
                 context = {'lang': order_sudo.user_id.partner_id.lang or order_sudo.company_id.partner_id.lang}
                 msg = _('Quotation viewed by customer %s', order_sudo.partner_id.name if request.env.user._is_public() else request.env.user.partner_id.name)
                 del context
@@ -113,7 +97,7 @@ class CustomerPortal(portal.CustomerPortal):
             'message': message,
             'report_type': 'html',
             'backend_url': backend_url,
-            'res_company': order_sudo.vin,  # Used to display correct company logo
+            'res_company': order_sudo.vin,
         }
 
         history_session_key = 'my_registry_history'
