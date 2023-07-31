@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="repairs_my_home" inherit_id="portal.portal_my_home" priority="21">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Repair orders</t>
+                <t t-set="url">/my/repairs</t>
+                <t t-set="placeholder_count" t-value="'repairs_count'"/>
+            </t>
+        </xpath>
+      </template>
+</odoo>

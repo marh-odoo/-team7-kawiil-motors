@@ -16,7 +16,7 @@
     "depends": ["repair", "website", "motorcycle_registry"],
     
     "data": [
-
+        'views/motorcycle_repair_portal_template.xml'
     ],
     
     "demo": [],
