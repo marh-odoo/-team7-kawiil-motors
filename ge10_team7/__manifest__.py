@@ -27,7 +27,7 @@ This Module is used to keep track of the current mileage of each motorcycle on t
     ],
 
     "assets":{
-        "web.assets_frontend":[
+        "web.assets_frontend_2":[
             "ge10_team7/static/src/js/odometer.js",
             "ge10_team7/static/styles/odometer_theme_car.css",
             #"ge10_team7/static/styles/generic.css",

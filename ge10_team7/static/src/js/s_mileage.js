@@ -11,7 +11,7 @@ odoo.define(
                 container.innerHTML = '<div class="col text-center">Loading...</div>';
 
                 ajax.jsonRpc( '/get_mileage_count', 'call', {}).then(data => {
-                    container.innerHTML = data;//`${String(data).padStart(7,'0')}`;
+                    container.innerHTML = `${String(data).padStart(7,'0')}`;
                 })
             }
         })
