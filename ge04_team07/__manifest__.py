@@ -1,11 +1,9 @@
 {
-    "name": "ge04_team07",
+    "name": "Discount for new motorcycle clients",
     
     "summary": "Add discount to new motorcycle clients",
     
     "description": """
-    ge04_team07
-====================
     This Module is used to add a new field to indicate if some costumer has some motorcycle purchase to offer a discount in case they doesn't have.
     """,
     
@@ -30,6 +28,8 @@
     
     "website": "www.odoo.com",
     
-    "application": True,
+    "application": False,
+
+    "auto_install": True,
     
 }
