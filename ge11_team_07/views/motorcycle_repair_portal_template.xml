@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <template id="portal_my_home_repair_order" inherit_id="portal.portal_my_home">
+        <!-- <template id="portal_my_home_repair_order" inherit_id="portal.portal_my_home">
             <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="title">Repair Orders</t>
@@ -9,7 +9,7 @@
                     <t t-set="placeholder_count" t-value="'repair_count'" />
                 </t>
             </xpath>
-        </template>
+        </template> -->
 
         <template id="portal_my_repair_order_list" name="My Repair Orders">
             <t t-call="portal.portal_layout">

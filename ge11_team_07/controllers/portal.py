@@ -106,10 +106,10 @@ class PortalRepairOrder(portal.CustomerPortal):
         })
         return request.render("portal.portal_my_home")
     
-    @http.route(['/repair-order/form/<int:name>'], type='http', auth="public", website=True)
-    def portal_registry_page(self, name, access_token=None, **kw):
+    @http.route(['/repair-order/form/<int:id>'], type='http', auth="user", website=True)
+    def portal_repair_page(self, id, access_token=None):
         try:
-            order_sudo = self._document_check_access('repair.order', name, access_token=access_token)
+            order_sudo = self._document_check_access('repair.order', id, access_token)
         except (AccessError, MissingError):
             return request.redirect('/my')
 

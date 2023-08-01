@@ -27,6 +27,6 @@
     
     "application": False,
 
-    "auto_install": True,
+    # "auto_install": True,
     
 }
