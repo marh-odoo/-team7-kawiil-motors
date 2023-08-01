@@ -1,43 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="repairs_my_home" inherit_id="portal.portal_my_home" priority="21">
-        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
-            <t t-call="portal.portal_docs_entry">
-                <t t-set="title">Repair orders</t>
-                <t t-set="url">/repairs/orders</t>
-                <t t-set="placeholder_count" t-value="'repairs_count'" />
-            </t>
-        </xpath>
-    </template>
-    <template id="portal_my_repair_orders" name="My Repair Orders">
-        <t t-call="portal.portal_layout">
-            <t t-set="breadcrumbs_searchbar" t-value="True" />
+    <data>
+        <template id="portal_my_home_repair_order" inherit_id="portal.portal_my_home">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="title">Repair Orders</t>
+                    <t t-set="url" t-value="'/repair-order/list'"/>
+                    <t t-set="placeholder_count" t-value="'repair_count'"/>
+                </t>
+            </xpath>
+        </template>
 
-            <t t-call="portal.portal_searchbar">
-                <t t-set="title">Hola</t>
-            </t>
-            <t t-if="registry" t-call="portal.portal_table">
-                <thead>
-                    <tr class="active">
-                        <th class="text-start">id</th>
-                        <th class="text-end">lot_id</th>
-                        <th class="text-end">product_id</th>
-                        <th class="text-center"/>
-                    </tr>
-                </thead>
-                <t t-foreach="registries" t-as="registry">
-                    <tr>
-                        <td>
-                            HOLA
-                        </td>
-                        <td class="text-end">
-                            <span t-field="registry.name"/> 
-                        </td>
-                        <td class="text-end"><span t-field="registry.partner_id"/></td>
+        <template id="portal_my_repair_order_list" name="My Repair Orders">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True" />
 
-                    </tr>
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Repair Orders</t>
+                </t>
+                <t t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th>Name</th>
+                            <th>State</th>
+                            <th>Motorcycle</th>
+                            <th>VIN</th>
+                            <th>Create Date</th>
+                        </tr>
+                    </thead>
+                    <t t-foreach="registries" t-as="registry">
+                        <tr>
+                            <td>
+                                <a t-att-href="registry.get_portal_url()">
+                                    <t t-out="registry.name" />
+                                </a>
+                            </td>
+                            <td>
+                                <span t-field="registry.state" />
+                            </td>
+                            <td>
+                                <span t-field="registry.registry_id.lot_id.product_id" />
+                            </td>
+                            <td>
+                                <span t-field="registry.vin" />
+                            </td>
+                            <td>
+                                <span t-field="registry.create_date" />
+                            </td>
+                        </tr>
+                    </t>
                 </t>
             </t>
-        </t>
-    </template>
+        </template>
+
+        <template id="portal_my_home_create_order" inherit_id="portal.portal_my_home">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="title">Create Repair Orders</t>
+                    <t t-set="url" t-value="'/new-order/'"/>
+                    <t t-set="placeholder_count" t-value="'create_count'"/>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="portal_my_new_repair_order_list" name="Create new repair order">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True" />
+
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">New Repair Order</t>
+                </t>
+                <form action="/new-order/submit">
+                    <div class="form-group">
+                        <label for="vin">VIN:</label>
+                        <input type="text" class="form-control" name="vin" id="vin" required="true" />          
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <input type="text" class="form-control" name="description" 
+                            id="description" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </t>
+        </template>
+
+    </data>
 </odoo>

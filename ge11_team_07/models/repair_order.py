@@ -1,17 +1,22 @@
 from odoo import api, fields, models
 
-class RepairOrders(models.Model):
+
+class RepairOrder(models.Model):
     _name = "repair.order"
-    _inherit = ['portal.mixin', 'repair.order', 'utm.mixin']
-    _description = "Override Mixin"
+    _inherit = ["repair.order", "portal.mixin"]
 
+    is_public = fields.Boolean("Public", default=True)
 
-    # portal.mixin override
+    def _get_portal_return_action(self):
+        self.ensure_one()
+        return self.env.ref("repair.view_repair_order_form")
+
     def _compute_access_url(self):
         super()._compute_access_url()
         for registry in self:
-            registry.access_url = f'/repairs/orders{registry.id}'
-    
-    def _get_portal_return_action(self):
+            print("-----------------", registry)
+            registry.access_url = f"/repair-order/form/{registry.registry_id.id}"
+
+    def _set_is_public(self):
         self.ensure_one()
-        return self.env.ref("repair_order.portal_my_repair_orders") 
+        self.is_public = not self.is_public
