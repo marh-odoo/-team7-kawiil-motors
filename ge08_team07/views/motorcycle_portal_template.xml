@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <template id="portal_my_home_menu_sale" name="Portal layout : sales menu entries" inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'registry' or motorcycle_registry" t-attf-class="breadcrumb-item #{'active ' if not motorcycle_registry else ''}">
+                <a t-if="motorcycle_registry" t-attf-href="/my/motorcycles?{{ keep_query() }}">Registries</a>
+                <t t-else="">Registries</t>
+            </li>
+            <li t-if="motorcycle_registry" class="breadcrumb-item active">
+                <span t-field="motorcycle_registry.registry_number"/>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_motorcycle" name="Show Motorcycles" customize_show="True" inherit_id="portal.portal_my_home" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Motorcycle Registries</t>
+                <t t-set="url" t-value="'/my/motorcycles'"/>
+                <t t-set="placeholder_count" t-value="'registry_count'"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_motorcycles" name="My Motorcycles">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Registries</t>
+            </t>
+
+            <t t-if="registry" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th class="text-start">Registry</th>
+                        <th class="text-end">License Plate</th>
+                        <th class="text-end">VIN</th>
+                        <th class="text-end">Name</th>
+                        <th class="text-end">Make</th>
+                        <th class="text-end">Model</th>
+                        <th class="text-end">Country</th>
+                        <th class="text-end">State</th>
+
+
+
+                        <th class="text-center"/>
+                    </tr>
+                </thead>
+                <t t-foreach="registry" t-as="registry">
+                    <tr>
+                        <td>
+                            <a t-att-href="registry.get_portal_url()">
+                                <t t-out="registry.registry_number"/>
+                            </a>
+                        </td>
+                        <td class="text-end"><span t-field="registry.license_plate"/></td>
+                        <td class="text-end"><span t-field="registry.vin"/></td>
+                        <td class="text-end"><span t-field="registry.owner_id.name"/></td>
+                        <td class="text-end"><span t-field="registry.make"/></td>
+                        <td class="text-end"><span t-field="registry.model"/></td>
+                        <td class="text-end"><span t-field="registry.owner_id.country_id.name"/></td>
+                        <td class="text-end"><span t-field="registry.owner_id.country_id.name"/></td>
+                    </tr>
+                </t>
+            </t>
+            <p t-else="">There are currently no registry for your account.</p>
+        </t>
+    </template>
+
+
+    <!-- Complete page of the motorcycle_registry -->
+    <template id="sale_order_portal_template" name="Sales Order Portal Template" inherit_id="portal.portal_sidebar" primary="True">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+            <t t-set="o_portal_fullwidth_alert">
+                <!-- Uses backend_url provided in rendering values -->
+                <t t-call="portal.portal_back_in_edit_mode"/>
+            </t>
+            
+            <!-- Sidebar -->
+            <div class="row mt16 o_portal_sale_sidebar">
+                <t t-call="portal.portal_record_sidebar">
+                    <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+
+                    <t t-set="title">
+                        <h2 class="mb-0">
+                            Owner's Information
+                        </h2>
+                    </t>
+                    <t t-set="entries">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                <th scope="row">Owner name:</th>
+                                <td>
+                                    <span t-field="motorcycle_registry.owner_id.name"/>   
+                                </td>
+
+                                </tr>
+                                <tr>
+                                <th scope="row">Phone:</th>
+                                <td>
+                                    <span t-field="motorcycle_registry.owner_id.phone"/>   
+                                </td>
+
+                                </tr>
+                                <tr>
+                                <th scope="row">Email:</th>
+                                <td colspan="2">
+                                    <div t-if="email_required" class="alert alert-danger alert-dismissable oe_email_required" role="alert">
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                        <p>Please enter a valid email address in order to receive notifications from answers or comments.</p>
+                                    </div>
+                                    <div>
+                                        <span t-field='motorcycle_registry.owner_id.email'/>                                    </div>
+                                </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                </t>
+
+                <!-- Page content -->
+                <div id="quote_content" class="col-12 col-lg justify-content-end">
+                    
+                    <!-- main content -->
+                    <div t-attf-class="card #{'pb-5' if report_type == 'html' else ''}" id="portal_sale_content">
+                        <div t-call="ge08_team07.sale_order_portal_content"/>
+                    </div>
+                </div><!-- // #quote_content -->
+            </div>
+        </xpath>
+    </template>
+
+
+    <template id="sale_order_portal_content" name="Sales Order Portal Content">
+        <!-- Intro -->
+        <div id="introduction" t-attf-class="pb-2 pt-3 #{'card-header bg-white' if report_type == 'html' else ''}">
+            <h2 class="my-0">
+                Registry Information
+            </h2>
+        </div>
+
+        <section id="details" style="page-break-inside: auto;" class="mt32">
+            <form t-attf-action="/edit/registry" method="post" role="form" class="o_wprofile_editor_form js_website_submit_form row" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <input type="hidden" name="id" id ="id" t-att-value="motorcycle_registry.id"/>
+
+                <table class="table table-striped">
+
+                    <tbody>
+                        <tr>
+                            <th scope="row"></th>
+                            <td> VIN </td>
+                            <td>
+                                <span t-field="motorcycle_registry.vin"/>  
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"></th>
+                            <td>Registry Number</td>
+                            <td>
+                                <t  t-if= "motorcycle_registry.owner_id.id == user.id" >
+                                    <div class="col-xs-2">
+                                        <input type="text" class="form-control" name="rn" id="rn" required="True" t-attf-value="#{motorcycle_registry.registry_number}"/>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <span t-field="motorcycle_registry.registry_number"/>  
+                                </t>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"></th>
+                            <td>License plate</td>
+                            <td>
+                                <t  t-if= "motorcycle_registry.owner_id.id == user.id" >
+                                    <input type="text" class="form-control" name="license" id="license"  t-attf-value="#{motorcycle_registry.license_plate}"/>
+                                </t>
+                                <t t-else="">
+                                    <span t-field="motorcycle_registry.license_plate"/>  
+                                </t>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"></th>
+                            <td>Make</td>
+                            <td>
+                                <span t-field="motorcycle_registry.make"/>  
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row"></th>
+                            <td>Model</td>
+                            <td>                                
+                                <span t-field="motorcycle_registry.model"/>  
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                
+                <t  t-if= "motorcycle_registry.owner_id.id == user.id" >
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col">
+                                    <button type="submit" class="btn btn-primary o_wprofile_submit_btn">Update</button>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-check form-switch">
+                                    <t  t-if= "motorcycle_registry.is_public == True" >
+                                        <input class="form-check-input" type="checkbox" value="True" name="public" id="flexSwitchCheckDefault" checked="True"/>
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Public profile</label>
+                                    </t>
+                                    <t t-else="">
+                                        <input class="form-check-input" type="checkbox" value="True" name="public" id="flexSwitchCheckDefault"/>
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Public profile</label>                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+                
+            </form>
+        </section>
+    </template>
+
+</odoo>
