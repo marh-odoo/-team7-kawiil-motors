@@ -1,11 +1,11 @@
 {
-    "name": "ge10_team7",
+    "name": "Total Mileage Widget",
     
     "summary": "Adds a widget to display total motorcycle mileage on a web view.",
     
     "description": """
     Total Mileage Count
-====================
+    
 This Module is used to keep track of the current mileage of each motorcycle on the registry.
     """,
     
@@ -33,10 +33,12 @@ This Module is used to keep track of the current mileage of each motorcycle on t
         ],
     },
     
-    "author": "kawiil-motors",
+    "author": "team7",
     
     "website": "www.odoo.com",
     
-    "application": True,
+    "application": False,
+
+    "auto_install": True,
     
 }
