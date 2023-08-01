@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+
+        <template id="portal_my_home_menu_repairs" name="Portal layout : repairs menu entries" inherit_id="portal.portal_breadcrumbs" priority="20">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'registries' or repair" t-attf-class="breadcrumb-item #{'active ' if not repair else ''}">
+                    <a t-if="repair" t-attf-href="/my/repairs?{{ keep_query() }}">Repairs</a>
+                    <t t-else="">Repairs</t>
+                </li>
+                <li t-if="repair" class="breadcrumb-item active">
+                    <span t-field="repair.registry_id"/>
+                </li>
+            </xpath>
+        </template>
+
         <template id="portal_my_home_repair_order" inherit_id="portal.portal_my_home">
             <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="title">Repair Orders</t>
-                    <t t-set="url" t-value="'/repair-order/list'" />
+                    <t t-set="url" t-value="'/my/repairs/'" />
                     <t t-set="placeholder_count" t-value="'repair_count'" />
                 </t>
             </xpath>

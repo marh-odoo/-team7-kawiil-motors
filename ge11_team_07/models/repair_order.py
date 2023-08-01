@@ -14,7 +14,7 @@ class RepairOrder(models.Model):
     def _compute_access_url(self):
         super()._compute_access_url()
         for registry in self:
-            registry.access_url = f"/repair-order/form/{registry.id}"
+            registry.access_url = f"/my/repairs/form/{registry.id}"
 
     def _set_is_public(self):
         self.ensure_one()

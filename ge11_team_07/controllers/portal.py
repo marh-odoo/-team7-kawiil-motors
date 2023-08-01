@@ -22,7 +22,7 @@ class PortalRepairOrder(portal.CustomerPortal):
         RepairOrder = request.env["repair.order"]
 
         domain = []
-        url = "/repair-order/list"
+        url = "/my/repairs/"
         values = self._prepare_portal_layout_values()
 
         pager_values = portal_pager(
@@ -56,7 +56,7 @@ class PortalRepairOrder(portal.CustomerPortal):
         RepairOrder = request.env["repair.order"]
 
         domain = []
-        url = "/repair-order/list"
+        url = "/my/repairs"
         values = self._prepare_portal_layout_values()
 
         pager_values = portal_pager(
@@ -86,7 +86,7 @@ class PortalRepairOrder(portal.CustomerPortal):
 
         return values
 
-    @http.route("/repair-order/list", type="http", auth="user", website=True)
+    @http.route("/my/repairs/", type="http", auth="user", website=True)
     def portal_my_repair_orders(self, **kwargs):
         values = self._prepare_repair_order_portal_rendering_values(
             **kwargs)
@@ -106,7 +106,7 @@ class PortalRepairOrder(portal.CustomerPortal):
         })
         return request.render("portal.portal_my_home")
     
-    @http.route(['/repair-order/form/<int:id>'], type='http', auth="user", website=True)
+    @http.route(['/my/repairs/form/<int:id>'], type='http', auth="user", website=True)
     def portal_repair_page(self, id, access_token=None):
         try:
             order_sudo = self._document_check_access('repair.order', id, access_token)
