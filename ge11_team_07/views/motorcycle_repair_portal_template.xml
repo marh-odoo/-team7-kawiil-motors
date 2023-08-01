@@ -119,5 +119,200 @@
             </t>
         </template>
 
+        <template id="repair_order_portal_template" name="Repairs Order Portal Template" inherit_id="portal.portal_sidebar" primary="True">
+            <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+                <t t-set="o_portal_fullwidth_alert">
+                    <!-- Uses backend_url provided in rendering values -->
+                    <t t-call="portal.portal_back_in_edit_mode"/>
+                </t>
+                
+                <!-- Sidebar -->
+                <div class="row mt16 o_portal_sale_sidebar">
+                    <t t-call="portal.portal_record_sidebar">
+                        <t t-set="classes" t-value="'col-lg-auto d-print-none'"/>
+    
+                        <t t-set="title">
+                            <h2 class="mb-0">
+                                Owner's Information
+                            </h2>
+                        </t>
+                        <t t-set="entries">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                    <th scope="row">Owner name:</th>
+                                    <td>
+                                        <span t-field="repair.partner_id"/>   
+                                    </td>
+    
+                                    </tr>
+                                    <tr>
+                                    <th scope="row">Phone:</th>
+                                    <td>
+                                        <span t-field="repair.partner_id.phone"/>   
+                                    </td>
+    
+                                    </tr>
+                                    <tr>
+                                    <th scope="row">Email:</th>
+                                    <td colspan="2">
+                                        <div t-if="email_required" class="alert alert-danger alert-dismissable oe_email_required" role="alert">
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                            <p>Please enter a valid email address in order to receive notifications from answers or comments.</p>
+                                        </div>
+                                        <div>
+                                            <span t-field='repair.partner_id.email'/>                                    </div>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                    </t>
+                    <div id="quote_content" class="col-12 col-lg justify-content-end">
+                        
+                        
+                        <div t-attf-class="card #{'pb-5' if report_type == 'html' else ''}" id="portal_sale_content">
+                            <div t-call="ge11_team_07.repair_order_portal_content"/>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+
+        <template id="repair_order_portal_content" name="Repairs Order Portal Content">
+            <!-- Intro -->
+            <div id="introduction" t-attf-class="pb-2 pt-3 #{'card-header bg-white' if report_type == 'html' else ''}">
+                <h2 class="my-0">
+                    Repairs Information
+                </h2>
+            </div>
+    
+            <section id="details" style="page-break-inside: auto;" class="mt32">
+                <form t-attf-action="/edit/registry" method="post" role="form" class="o_wprofile_editor_form js_website_submit_form row" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <input type="hidden" name="id" id ="id" t-att-value="repair.name"/>
+    
+                    <table class="table table-striped">
+    
+                        <tbody>
+                            <tr>
+                                <th scope="row"></th>
+                                <td> VIN </td>
+                                <td>
+                                    <span t-field="repair.vin"/>  
+                                </td>
+                            </tr>
+    
+                            <tr>
+                                <th scope="row"></th>
+                                <td>Registry Number</td>
+                                <td>
+                                    <t>
+                                        <span t-field="repair.registry_id"/>  
+                                    </t>
+                                </td>
+                            </tr>
+    
+                            <tr>
+                                <th scope="row"></th>
+                                <td>License plate</td>
+                                <td>
+                                    <!-- <t  t-if= "motorcycle_registry.owner_id.id == user.id" >
+                                        <input type="text" class="form-control" name="license" id="license"  t-attf-value="#{motorcycle_registry.license_plate}"/>
+                                    </t> -->
+                                    <t>
+                                        <span t-field="repair.registry_id.license_plate"/>  
+                                    </t>
+                                </td>
+                            </tr>
+    
+                            <tr>
+                                <th scope="row"></th>
+                                <td>Make</td>
+                                <td>
+                                    <span t-field="repair.registry_id.make"/>  
+                                </td>
+                            </tr>
+    
+                            <tr>
+                                <th scope="row"></th>
+                                <td>Model</td>
+                                <td>                                
+                                    <span t-field="repair.registry_id.model"/>  
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"></th>
+                                <td>Status</td>
+                                <td>                                
+                                    <t t-if="repair.state == 'confirmed'">
+                                        <span class="badge rounded-pill text-bg-info">
+                                            <span class="d-none d-md-inline" t-field="repair.state"></span>
+                                            <i class="fa fa-fw fa-wrench" aria-label="Opened"
+                                                title="Opened" role="img"></i>
+                                        </span>
+                                    </t>
+                                    <t t-if="repair.state == 'draft'">
+                                        <span class="badge rounded-pill text-bg-warning">
+                                            <span class="d-none d-md-inline" t-field="repair.state"></span>
+                                            <i class="fa fa-fw fa-question" aria-label="Cancelled"
+                                                title="Cancelled" role="img"></i>
+                                        </span>
+                                    </t>
+                                    <t t-if="repair.state == 'cancel'">
+                                        <span class="badge rounded-pill text-bg-danger">
+                                            <span class="d-none d-md-inline" t-field="repair.state"></span>
+                                            <i class="fa fa-fw fa-ban" aria-label="Cancelled"
+                                                title="Cancelled" role="img"></i>
+                                        </span>
+                                    </t>
+                                    <t t-if="repair.state == 'done'">
+                                        <span class="badge rounded-pill text-bg-success">
+                                            <span class="d-none d-md-inline" t-field="repair.state"></span>
+                                            <i class="fa fa-fw fa-check" aria-label="Cancelled"
+                                                title="Cancelled" role="img"></i>
+                                        </span>
+                                    </t>
+                                    <t t-if="repair.state == 'under_repair'">
+                                        <span class="badge rounded-pill text-bg-light">
+                                            <span class="d-none d-md-inline" t-field="repair.state"></span>
+                                            <i class="fa fa-fw fa-clock-o" aria-label="Cancelled"
+                                                title="Cancelled" role="img"></i>
+                                        </span>
+                                    </t>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+    
+    
+                    
+                    <!-- <t  t-if= "motorcycle_registry.owner_id.id == user.id" >
+                        <div class="container text-center">
+                            <div class="row">
+                                <div class="col">
+                                        <button type="submit" class="btn btn-primary o_wprofile_submit_btn">Update</button>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-check form-switch">
+                                        <t  t-if= "motorcycle_registry.is_public == True" >
+                                            <input class="form-check-input" type="checkbox" value="True" name="public" id="flexSwitchCheckDefault" checked="True"/>
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Public profile</label>
+                                        </t>
+                                        <t t-else="">
+                                            <input class="form-check-input" type="checkbox" name="public" id="flexSwitchCheckDefault"/>
+                                            <label class="form-check-label" for="flexSwitchCheckDefault">Public profile</label>  
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t> -->
+                    
+                </form>
+            </section>
+        </template>
+    
+
     </data>
 </odoo>

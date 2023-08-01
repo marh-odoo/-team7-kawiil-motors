@@ -105,3 +105,27 @@ class PortalRepairOrder(portal.CustomerPortal):
             'description': post.get('description'),
         })
         return request.render("portal.portal_my_home")
+    
+    @http.route(['/repair-order/form/<int:name>'], type='http', auth="public", website=True)
+    def portal_registry_page(self, name, access_token=None, **kw):
+        try:
+            order_sudo = self._document_check_access('repair.order', name, access_token=access_token)
+        except (AccessError, MissingError):
+            return request.redirect('/my')
+
+        backend_url = f'/web#model={order_sudo._name}'\
+                    f'&id={order_sudo.id}'\
+                    f'&action={order_sudo._get_portal_return_action().id}'\
+                    f'&view_type=form'
+        
+        values = {
+            'repair': order_sudo,
+            'report_type': 'html',
+            'backend_url': backend_url,
+        }
+
+        history_session_key = 'my_registry_history'
+        values = self._get_page_view_values(order_sudo, access_token, values, history_session_key, False)
+
+
+        return request.render('ge11_team_07.repair_order_portal_template', values)
