@@ -1,1 +1,1 @@
-from . import sale_order_warehouse
+from . import sale_order
