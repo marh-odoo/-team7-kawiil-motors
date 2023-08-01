@@ -17,7 +17,8 @@ class CustomerPortal(portal.CustomerPortal):
         partner = request.env.user.partner_id
 
         MotorcycleRegistry = request.env['motorcycle.registry']
-        values['registry_count'] = MotorcycleRegistry.search_count([("owner_id", "=", partner.id)]) \
+        
+        values['registry_count'] = MotorcycleRegistry.search_count(['|',("owner_id", "=", partner.id),('is_public','=',True)]) \
             if MotorcycleRegistry.check_access_rights('read', raise_exception=False) else 0
         return values
 
@@ -27,14 +28,6 @@ class CustomerPortal(portal.CustomerPortal):
             domain.append(search_domain[0])  
         return domain  
 
-
-    def _get_sale_searchbar_sortings(self):
-        return {
-            #'date': {'label': _('Order Date'), 'order': 'registry_date desc'},
-            'vin':  {'label': _('Reference'), 'order': 'vin'},
-        }
-
-
     def _prepare_registry_portal_rendering_values(
         self, search_domain, search_in, search, search_list):
         MotorcycleRegistry = request.env['motorcycle.registry']
@@ -42,16 +35,13 @@ class CustomerPortal(portal.CustomerPortal):
         partner = request.env.user.partner_id
         values = self._prepare_portal_layout_values()
 
-        #searchbar_sortings = self._get_sale_searchbar_sortings()
-        #sort_order = searchbar_sortings['vin']['order']
-
         url = "/my/motorcycles"
         domain = self._prepare_registry_domain(partner, search_domain)
 
             
         pager_values = portal_pager(
             url=url,
-            total=MotorcycleRegistry.search_count([("owner_id", "=", partner.id)]),
+            total=MotorcycleRegistry.search_count(domain),
             step=self._items_per_page,
         )
 
@@ -104,7 +94,7 @@ class CustomerPortal(portal.CustomerPortal):
             if session_obj_date != today:
                 # store the date as a string in the session to allow serialization
                 request.session['view_quote_%s' % order_sudo.id] = today
-                # The "Quotation viewed by customer" log note is an information
+                # The "Registry viewed by customer" log note is an information
                 # dedicated to the salesman and shouldn't be translated in the customer/website lgg
                 context = {'lang': order_sudo.user_id.partner_id.lang or order_sudo.company_id.partner_id.lang}
                 msg = _('Quotation viewed by customer %s', order_sudo.partner_id.name if request.env.user._is_public() else request.env.user.partner_id.name)
@@ -145,8 +135,11 @@ class CustomerPortal(portal.CustomerPortal):
         if post and request.httprequest.method == 'POST':
             registry = request.env['motorcycle.registry'].browse(post['id'])
             registry.sudo().write({'registry_number':post['rn'], 'license_plate':post['license']})
-            if (post['public']):
-                registry.sudo().write({'is_public':True})
+
+            try:
+                registry.sudo().write({'is_public':post['public']})
+            except KeyError as error:
+                registry.sudo().write({'is_public':False})
 
             if redirect:
                 return request.redirect(redirect)

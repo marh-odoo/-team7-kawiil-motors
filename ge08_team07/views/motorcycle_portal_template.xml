@@ -38,6 +38,14 @@
                         <th class="text-start">Registry</th>
                         <th class="text-end">License Plate</th>
                         <th class="text-end">VIN</th>
+                        <th class="text-end">Name</th>
+                        <th class="text-end">Make</th>
+                        <th class="text-end">Model</th>
+                        <th class="text-end">Country</th>
+                        <th class="text-end">State</th>
+
+
+
                         <th class="text-center"/>
                     </tr>
                 </thead>
@@ -50,7 +58,11 @@
                         </td>
                         <td class="text-end"><span t-field="registry.license_plate"/></td>
                         <td class="text-end"><span t-field="registry.vin"/></td>
-
+                        <td class="text-end"><span t-field="registry.owner_id.name"/></td>
+                        <td class="text-end"><span t-field="registry.make"/></td>
+                        <td class="text-end"><span t-field="registry.model"/></td>
+                        <td class="text-end"><span t-field="registry.owner_id.country_id.name"/></td>
+                        <td class="text-end"><span t-field="registry.owner_id.country_id.name"/></td>
                     </tr>
                 </t>
             </t>
@@ -59,7 +71,7 @@
     </template>
 
 
-    <!-- Complete page of the sale_order -->
+    <!-- Complete page of the motorcycle_registry -->
     <template id="sale_order_portal_template" name="Sales Order Portal Template" inherit_id="portal.portal_sidebar" primary="True">
         <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
             <t t-set="o_portal_fullwidth_alert">
@@ -202,11 +214,14 @@
                                     <button type="submit" class="btn btn-primary o_wprofile_submit_btn">Update</button>
                             </div>
                             <div class="col-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" name="public" type="checkbox" id="flexCheckDefault"/>
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        Public profile
-                                    </label>
+                                <div class="form-check form-switch">
+                                    <t  t-if= "motorcycle_registry.is_public == True" >
+                                        <input class="form-check-input" type="checkbox" value="True" name="public" id="flexSwitchCheckDefault" checked="True"/>
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Public profile</label>
+                                    </t>
+                                    <t t-else="">
+                                        <input class="form-check-input" type="checkbox" value="True" name="public" id="flexSwitchCheckDefault"/>
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Public profile</label>                                    </t>
                                 </div>
                             </div>
                         </div>
