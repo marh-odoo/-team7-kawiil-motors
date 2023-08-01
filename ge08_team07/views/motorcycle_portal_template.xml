@@ -49,7 +49,7 @@
                         <th class="text-center"/>
                     </tr>
                 </thead>
-                <t t-foreach="registry" t-as="registry">
+                <t t-foreach="registries" t-as="registry">
                     <tr>
                         <td>
                             <a t-att-href="registry.get_portal_url()">
