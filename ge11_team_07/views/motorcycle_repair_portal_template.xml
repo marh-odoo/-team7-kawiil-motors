@@ -4,7 +4,7 @@
 
         <template id="portal_my_home_menu_repairs" name="Portal layout : repairs menu entries" inherit_id="portal.portal_breadcrumbs" priority="20">
             <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
-                <li t-if="page_name == 'registries' or repair" t-attf-class="breadcrumb-item #{'active ' if not repair else ''}">
+                <li t-if="page_name == 'repair_order' or repair" t-attf-class="breadcrumb-item #{'active ' if not repair else ''}">
                     <a t-if="repair" t-attf-href="/my/repairs?{{ keep_query() }}">Repairs</a>
                     <t t-else="">Repairs</t>
                 </li>
