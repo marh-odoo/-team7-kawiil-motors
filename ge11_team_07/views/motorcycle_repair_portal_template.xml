@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!-- <template id="portal_my_home_repair_order" inherit_id="portal.portal_my_home">
+        <template id="portal_my_home_repair_order" inherit_id="portal.portal_my_home">
             <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="title">Repair Orders</t>
@@ -9,7 +9,7 @@
                     <t t-set="placeholder_count" t-value="'repair_count'" />
                 </t>
             </xpath>
-        </template> -->
+        </template>
 
         <template id="portal_my_repair_order_list" name="My Repair Orders">
             <t t-call="portal.portal_layout">
@@ -180,7 +180,6 @@
         </template>
 
         <template id="repair_order_portal_content" name="Repairs Order Portal Content">
-            <!-- Intro -->
             <div id="introduction" t-attf-class="pb-2 pt-3 #{'card-header bg-white' if report_type == 'html' else ''}">
                 <h2 class="my-0">
                     Repairs Information
@@ -217,9 +216,6 @@
                                 <th scope="row"></th>
                                 <td>License plate</td>
                                 <td>
-                                    <!-- <t  t-if= "motorcycle_registry.owner_id.id == user.id" >
-                                        <input type="text" class="form-control" name="license" id="license"  t-attf-value="#{motorcycle_registry.license_plate}"/>
-                                    </t> -->
                                     <t>
                                         <span t-field="repair.registry_id.license_plate"/>  
                                     </t>
@@ -284,31 +280,6 @@
                             </tr>
                         </tbody>
                     </table>
-    
-    
-                    
-                    <!-- <t  t-if= "motorcycle_registry.owner_id.id == user.id" >
-                        <div class="container text-center">
-                            <div class="row">
-                                <div class="col">
-                                        <button type="submit" class="btn btn-primary o_wprofile_submit_btn">Update</button>
-                                </div>
-                                <div class="col-3">
-                                    <div class="form-check form-switch">
-                                        <t  t-if= "motorcycle_registry.is_public == True" >
-                                            <input class="form-check-input" type="checkbox" value="True" name="public" id="flexSwitchCheckDefault" checked="True"/>
-                                            <label class="form-check-label" for="flexSwitchCheckDefault">Public profile</label>
-                                        </t>
-                                        <t t-else="">
-                                            <input class="form-check-input" type="checkbox" name="public" id="flexSwitchCheckDefault"/>
-                                            <label class="form-check-label" for="flexSwitchCheckDefault">Public profile</label>  
-                                        </t>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </t> -->
-                    
                 </form>
             </section>
         </template>

@@ -99,7 +99,7 @@ class PortalRepairOrder(portal.CustomerPortal):
         return http.request.render("ge11_team_07.portal_my_new_repair_order_list", values)
 
     @http.route(['/new-order/submit'], type='http', auth="public", website=True)
-    def customer_form_submit(self, **post):
+    def repair_form_submit(self, **post):
         request.env['repair.order'].create({
             'vin': post.get('vin'),
             'description': post.get('description'),
