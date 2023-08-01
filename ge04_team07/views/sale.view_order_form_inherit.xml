@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="sale_view" model="ir.ui.view">
+        <field name="name">sale.view_order_form_inherit_ge04_team07</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_confirm']" position="after">
+                <field name="is_new_customer" position="after" invisible="1"/>
+                    <button name="apply_new_customer_discount" type="object" class="oe_stat_button" attrs="{'invisible': [('is_new_customer', '=', False)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Discount</span>
+                        </div>
+                    </button>
+            </xpath>
+               
+        </field>
+    </record>
+</odoo>
