@@ -87,9 +87,12 @@ class CustomerPortal(portal.CustomerPortal):
             return request.redirect('/my')
 
         if request.env.user.share and access_token:
+            # If a public/portal user accesses the order with the access token
+            # Log a note on the chatter.
             today = fields.Date.today().isoformat()
             session_obj_date = request.session.get('view_quote_%s' % order_sudo.id)
             if session_obj_date != today:
+                # store the date as a string in the session to allow serialization
                 request.session['view_quote_%s' % order_sudo.id] = today
                 # The "Registry viewed by customer" log note is an information
                 # dedicated to the salesman and shouldn't be translated in the customer/website lgg
