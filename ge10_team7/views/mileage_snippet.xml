@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="" type="text/css"?>
+
+<odoo>
+    <data>
+        <record id="ge10_team7.website_snippet" model="ir.asset">
+            <field name="name">Website Snippet</field>
+            <field name="bundle">web.assets_frontend</field>
+            <field name="path">ge10_team7/static/src/js/s_mileage.js</field>
+        </record>
+        <template id="mileage_snippet_template" name="snippet template" inherit_id="website.snippets" >
+            <xpath expr="//div[@id='snippet_effect']/div[hasclass('o_panel_body')]" position="inside">
+                <t t-snippet="ge10_team7.mileage_snippet"/> 
+            </xpath>
+        </template>
+        <template t-name="mileage_snippet" name="Mileage Counter Section">
+            <t t-call="web.layout">
+                <t t-set="html_data" t-value="{'style': 'height: 100%;'}"/>
+                <t t-set="head">
+                    <t t-call-assets="web.assets_frontend_2" t-js="true"/>
+                </t>
+            </t>
+            <section>
+                <div class="container card pt48 pb48">
+                    <div class="col card-body">
+                        <div class="row text-center card-title bg-light">
+                            <h2>
+                                Total Miles Travelled by our Motorcycles
+                            </h2>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <h1 id="odometer" class="text-center odometer"></h1>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </template>
+    </data>
+</odoo> 

@@ -1,9 +1,9 @@
 {
-    "name": "ge08_team07",
+    "name": "Customer Portal for Motorcycle Registries",
     
-    "summary": "Motorcycle Registry Portal",
+    "summary": "Portal where customers can view and edit their Registries",
     
-    "description": """Website portal for customres to see their registries""",
+    "description": """Website portal for customres to see and edit their registries""",
     
     "version": "0.1",
     
@@ -24,5 +24,7 @@
     "website": "www.odoo.com",
     
     "application": False,
+
+    "auto_install":True
     
 }

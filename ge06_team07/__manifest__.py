@@ -8,7 +8,7 @@
     'category':'Kawiil/Admin',
     'depends':['sale_stock','sale','mrp','motorcycle_registry'],
     'data':[
-        'data/serial_number_data.xml',
+        'data/stock_lot_data.xml',
     ],
     'demo':[],
     'application': False,

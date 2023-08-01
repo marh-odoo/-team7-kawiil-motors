@@ -11,7 +11,7 @@ class MotorcycleRegistry(models.Model):
     owner_id = fields.Many2one(comodel_name="res.partner", ondelete="restrict", related="sale_order_id.partner_id")
 
     @api.constrains('lot_ids')
-    def _validate_one2one_lot_ids(self):
+    def _check_lot_ids(self):
         for registry in self:
             if len(registry.lot_ids) > 1:
                 raise ValidationError("It is not possible to add more that one stock lot")
