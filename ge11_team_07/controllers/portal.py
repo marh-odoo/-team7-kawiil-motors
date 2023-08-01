@@ -90,13 +90,13 @@ class PortalRepairOrder(portal.CustomerPortal):
     def portal_my_repair_orders(self, **kwargs):
         values = self._prepare_repair_order_portal_rendering_values(
             **kwargs)
-        return http.request.render("ge11_team01.portal_my_repair_order_list", values)
+        return http.request.render("ge11_team_07.portal_my_repair_order_list", values)
 
     @http.route("/new-order/", type="http", auth="user", website=True)
     def portal_my_create_orders(self, **kwargs):
         values = self._prepare_create_order_portal_rendering_values(
             **kwargs)
-        return http.request.render("ge11_team01.portal_my_new_repair_order_list", values)
+        return http.request.render("ge11_team_07.portal_my_new_repair_order_list", values)
 
     @http.route(['/new-order/submit'], type='http', auth="public", website=True)
     def customer_form_submit(self, **post):

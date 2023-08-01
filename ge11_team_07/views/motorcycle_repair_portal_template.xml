@@ -5,8 +5,8 @@
             <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="title">Repair Orders</t>
-                    <t t-set="url" t-value="'/repair-order/list'"/>
-                    <t t-set="placeholder_count" t-value="'repair_count'"/>
+                    <t t-set="url" t-value="'/repair-order/list'" />
+                    <t t-set="placeholder_count" t-value="'repair_count'" />
                 </t>
             </xpath>
         </template>
@@ -14,17 +14,16 @@
         <template id="portal_my_repair_order_list" name="My Repair Orders">
             <t t-call="portal.portal_layout">
                 <t t-set="breadcrumbs_searchbar" t-value="True" />
-
                 <t t-call="portal.portal_searchbar">
-                    <t t-set="title">Repair Orders</t>
+                    <t t-set="title">Registries</t>
                 </t>
                 <t t-call="portal.portal_table">
                     <thead>
                         <tr class="active">
                             <th>Name</th>
-                            <th>State</th>
                             <th>Motorcycle</th>
                             <th>VIN</th>
+                            <th>Status</th>
                             <th>Create Date</th>
                         </tr>
                     </thead>
@@ -36,14 +35,49 @@
                                 </a>
                             </td>
                             <td>
-                                <span t-field="registry.state" />
-                            </td>
-                            <td>
                                 <span t-field="registry.registry_id.lot_id.product_id" />
                             </td>
                             <td>
                                 <span t-field="registry.vin" />
                             </td>
+                            <td>
+                                <t t-if="registry.state == 'confirmed'">
+                                    <span class="badge rounded-pill text-bg-info">
+                                        <span class="d-none d-md-inline" t-field="registry.state"></span>
+                                        <i class="fa fa-fw fa-wrench" aria-label="Opened"
+                                            title="Opened" role="img"></i>
+                                    </span>
+                                </t>
+                                <t t-if="registry.state == 'draft'">
+                                    <span class="badge rounded-pill text-bg-warning">
+                                        <span class="d-none d-md-inline" t-field="registry.state"></span>
+                                        <i class="fa fa-fw fa-question" aria-label="Cancelled"
+                                            title="Cancelled" role="img"></i>
+                                    </span>
+                                </t>
+                                <t t-if="registry.state == 'cancel'">
+                                    <span class="badge rounded-pill text-bg-danger">
+                                        <span class="d-none d-md-inline" t-field="registry.state"></span>
+                                        <i class="fa fa-fw fa-ban" aria-label="Cancelled"
+                                            title="Cancelled" role="img"></i>
+                                    </span>
+                                </t>
+                                <t t-if="registry.state == 'done'">
+                                    <span class="badge rounded-pill text-bg-success">
+                                        <span class="d-none d-md-inline" t-field="registry.state"></span>
+                                        <i class="fa fa-fw fa-check" aria-label="Cancelled"
+                                            title="Cancelled" role="img"></i>
+                                    </span>
+                                </t>
+                                <t t-if="registry.state == 'under_repair'">
+                                    <span class="badge rounded-pill text-bg-light">
+                                        <span class="d-none d-md-inline" t-field="registry.state"></span>
+                                        <i class="fa fa-fw fa-clock-o" aria-label="Cancelled"
+                                            title="Cancelled" role="img"></i>
+                                    </span>
+                                </t>
+                            </td>
+
                             <td>
                                 <span t-field="registry.create_date" />
                             </td>
@@ -57,8 +91,8 @@
             <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="title">Create Repair Orders</t>
-                    <t t-set="url" t-value="'/new-order/'"/>
-                    <t t-set="placeholder_count" t-value="'create_count'"/>
+                    <t t-set="url" t-value="'/new-order/'" />
+                    <t t-set="placeholder_count" t-value="'create_count'" />
                 </t>
             </xpath>
         </template>
@@ -73,11 +107,11 @@
                 <form action="/new-order/submit">
                     <div class="form-group">
                         <label for="vin">VIN:</label>
-                        <input type="text" class="form-control" name="vin" id="vin" required="true" />          
+                        <input type="text" class="form-control" name="vin" id="vin" required="true" />
                     </div>
                     <div class="form-group">
                         <label for="description">Description:</label>
-                        <input type="text" class="form-control" name="description" 
+                        <input type="text" class="form-control" name="description"
                             id="description" />
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
