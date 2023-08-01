@@ -1,7 +1,10 @@
 {
-    'name':'ge05_team07',
-    'summary':""" Select Automatic Warehouse depending the customer location  """,
-    'description':""" Kawiil motorcycle TG05 - Automatic Warehouse""",
+    'name':'Automatic Warehouse Assignment',
+    'summary':""" Assign Automatic Warehouse depending the customer location.""",
+    'description':""" 
+        When setting up the sale order if the customer has an US address a warehouse will be automatically assigned depending 
+        on its location.
+    """,
     'license':'OPL-1',
     'author':'team7',
     'website':'www.odoo.com',
@@ -9,5 +12,6 @@
     'depends':['sale_stock','sale'],
     'data':[],
     'demo':[],
-    'application': True,
+    'application': False,
+    'auto_install': True,
 }
