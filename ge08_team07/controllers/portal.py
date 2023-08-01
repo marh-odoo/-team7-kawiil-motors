@@ -134,14 +134,12 @@ class CustomerPortal(portal.CustomerPortal):
 
         if post and request.httprequest.method == 'POST':
             registry = request.env['motorcycle.registry'].browse(post['id'])
-            registry.sudo().write({'registry_number':post['rn'], 'license_plate':post['license']})
 
             try:
-                registry.sudo().write({'is_public':post['public']})
+                registry.sudo().write({'registry_number':post['rn'], 'license_plate':post['license'],'is_public':post['public']})
             except KeyError as error:
-                registry.sudo().write({'is_public':False})
-
+                registry.sudo().write({'registry_number':post['rn'], 'license_plate':post['license'],'is_public':False})
+                
             if redirect:
                 return request.redirect(redirect)
-            return request.redirect('/my/home')
-
+            return request.redirect('/my/motorcycles')
