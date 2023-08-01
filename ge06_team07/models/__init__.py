@@ -1,1 +1,1 @@
-from . import serial_number
+from . import stock_lot
